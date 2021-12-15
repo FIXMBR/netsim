@@ -1,3 +1,0 @@
-"D:\programy_studia\clion\CLion 2021.2.1\bin\cmake\win\bin\cmake.exe" -E rm -f CMakeFiles\tsp.dir/objects.a
-C:\msys64\mingw64\bin\ar.exe cr CMakeFiles\tsp.dir/objects.a @CMakeFiles\tsp.dir\objects1.rsp
-C:\msys64\mingw64\bin\g++.exe -g -Wl,--whole-archive CMakeFiles\tsp.dir/objects.a -Wl,--no-whole-archive -o tsp.exe -Wl,--out-implib,libtsp.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\tsp.dir\linklibs.rsp
