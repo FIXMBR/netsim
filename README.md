@@ -3,8 +3,7 @@
 - `package.hpp`
 - `types.hpp`
 - `storage_types.hpp`
-- `package.hpp`
 
 2. Zaimportować headerki do plików cpp
 
-3. Napisać faktyczną funkcjonalność `package.cpp`
+3. Napisać faktyczną funkcjonalność `package.cpp`, `storage_types.cpp`
