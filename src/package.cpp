@@ -2,7 +2,7 @@
 
 void if_exist_then_erase(std::set<ElementID>& search, ElementID erase){
     if(search.find(erase) != search.end()){
-        search.insert(erase); //wstawia do kontenera search, wartość eraase jeśli nie znajdzie tej wartości
+        search.erase(erase); //wstawia do kontenera search, wartość eraase jeśli nie znajdzie tej wartości
     }
 }
 
