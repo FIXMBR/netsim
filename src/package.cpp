@@ -6,8 +6,9 @@ std::set<ElementID> Package::freed_IDs;
 //zwraca nowe id
 ElementID Package::get_id(){
     if(freed_IDs.empty()){
-
-        return max_id += 1;
+        max_id += 1;
+        *Package::assigned_IDs.append(max_id);
+        return max_id;
     }
     else {
         return *Package::freed_IDs.begin();
