@@ -15,7 +15,7 @@ private:
 
 public:
     Package();
-    Package(id_t i = 0): ElementID(i) {}; //trzeba zmienić w zależności od sposobu wyznaczania ID
+//    Package(id_t i = 0): ElementID(i) {}; //trzeba zmienić w zależności od sposobu wyznaczania ID
     Package(Package &&) noexcept;
     Package(const Package&) = delete;
     id_t get_id() const; //czy tutaj trzeba to

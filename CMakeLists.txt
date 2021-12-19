@@ -21,3 +21,29 @@ set(SOURCE_FILES
         )
 
 add_executable(netsim ${SOURCE_FILES} main.cpp)
+
+
+# == Unit testing using Google Testing Framework ==
+
+# Ustaw zmienną `SOURCES_FILES_TESTS`, która będzie przechowywać ścieżki do
+# plików źródłowych z testami jednostkowymi.
+set(SOURCES_FILES_TESTS
+        test/test_package.cpp
+        )
+
+# Dodaj konfigurację typu `Test`.
+add_executable(my_project_test ${SOURCE_FILES} ${SOURCES_FILES_TESTS} test/main_gtest.cpp)
+
+# Dodaj katalogi z plikami nagłówkowymi wyłącznie do konkretnej konfiguracji (tu: `Test`).
+target_include_directories(my_project_test PUBLIC
+        googletest-release-1.11.0/googlemock/include
+        googletest-release-1.11.0/googletest/include
+        mocks
+        )
+
+# Dodaj podkatalog `googletest-master`.
+add_subdirectory(googletest-release-1.11.0)
+
+# Podlinkuj bibliotekę o identyfikatorze `gmock` (w pliku CMake) wyłącznie do konkretnej
+# konfiguracji (tu: `Test`).
+target_link_libraries(my_project_test gmock)
