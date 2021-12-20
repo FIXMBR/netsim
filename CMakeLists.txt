@@ -3,7 +3,7 @@ project(netsim)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_compile_options(-Wall -Wextra -Werror -Wpedantic -pedantic-errors -Wconversion)
+# add_compile_options(-Wall -Wextra -Werror -Wpedantic -pedantic-errors -Wconversion)
 
 include_directories(
         include
@@ -29,6 +29,7 @@ add_executable(netsim ${SOURCE_FILES} main.cpp)
 # plików źródłowych z testami jednostkowymi.
 set(SOURCES_FILES_TESTS
         test/test_package.cpp
+        test/test_storage_types.cpp
         )
 
 # Dodaj konfigurację typu `Test`.
