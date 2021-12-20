@@ -16,8 +16,9 @@ private:
 public:
     Package(){
         if(freed_IDs.empty()){
-            if(!assigned_IDs.empty()) {
-                id_ = *assigned_IDs.rbegin() + 1;
+            if(!assigned_IDs.empty()){
+                ElementID max_id = *assigned_IDs.rbegin();
+                id_ = max_id + 1;
                 assigned_IDs.insert(id_);
             }
             else{
@@ -31,6 +32,7 @@ public:
             freed_IDs.erase(id_);
         }
     };
+
     Package(int x){id_ = x;};
     Package(const Package &p) { id_ = p.get_id(); };
     ElementID get_id() const;
