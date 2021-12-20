@@ -16,10 +16,7 @@ private:
 
 public:
     Package(){};
-    Package(int x)
-    {
-        id_ = x;
-    };
+    Package(int x){id_ = x;};
     Package(const Package &p) { id_ = p.get_id(); };
     ElementID get_id() const;
     ~Package();

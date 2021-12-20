@@ -4,9 +4,9 @@ std::set<ElementID> Package::assigned_IDs;
 std::set<ElementID> Package::freed_IDs;
 
 //zwraca nowe id
-ElementID Package::get_id() const
-{
+ElementID Package::get_id() const {
     return id_;
+}
     // if (freed_IDs.empty())
     // {
     //     max_id += 1;
@@ -17,7 +17,7 @@ ElementID Package::get_id() const
     // {
     //     return *Package::freed_IDs.begin();
     // }
-}
+
 
 void if_exist_then_erase(std::set<ElementID> &search, ElementID erase)
 {
