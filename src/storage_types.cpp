@@ -1,3 +1,4 @@
+//1b: Bartoszewski (406690), Gajek (400365), Gąsior (407326), Kowalczyk (406185)
 #include "storage_types.hpp"
 
 Package PackageQueue::pop()
@@ -23,3 +24,4 @@ Package PackageQueue::pop()
         break;
     }
 }
+//1b: Bartoszewski (406690), Gajek (400365), Gąsior (407326), Kowalczyk (406185)
