@@ -4,11 +4,6 @@
 std::set<ElementID> Package::assigned_IDs;
 std::set<ElementID> Package::freed_IDs;
 
-//zwraca nowe id
-ElementID Package::get_id() const
-{
-    return id_;
-}
 Package::Package()
 {
     if (freed_IDs.empty())

@@ -20,9 +20,10 @@ public:
     Package(int x) { id_ = x; };
     Package(const Package &p) { id_ = p.get_id(); };
     Package(Package &&p) = default;
-    ElementID get_id() const;
+    ElementID get_id() const { return id_; };
     ~Package();
 };
 
 #endif //NETSIM_PACKAGE_HPP
+
 //1b: Bartoszewski (406690), Gajek (400365), Gąsior (407326), Kowalczyk (406185)
