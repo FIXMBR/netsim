@@ -26,7 +26,7 @@ Package::Package()
         assigned_IDs.insert(id_);
         freed_IDs.erase(id_);
     }
-};
+}
 
 Package::~Package()
 {
