@@ -2,23 +2,24 @@
 
 Package PackageQueue::pop()
 {
-    Package p;
+
+    Package p2(stockPile_.front());
+    Package p1(stockPile_.back());
     switch (packageQueueType_)
     {
     case PackageQueueType::LIFO:
-        p = stockPile_.back();
         stockPile_.pop_back();
-        return p;
+        return p1;
         break;
 
     case PackageQueueType::FIFO:
-        p = stockPile_.front();
+        // p = stockPile_.front();
         stockPile_.pop_front();
-        return p;
+        return p2;
         break;
 
     default:
-        return p;
+        throw;
         break;
     }
 }

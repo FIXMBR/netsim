@@ -14,27 +14,11 @@ private:
     ElementID id_;
 
 public:
-    Package(){
-        if(freed_IDs.empty()){
-            if(!assigned_IDs.empty()){
-                ElementID max_id = *assigned_IDs.rbegin();
-                id_ = max_id + 1;
-                assigned_IDs.insert(id_);
-            }
-            else{
-                id_ = 1;
-                assigned_IDs.insert(id_);
-            }
-        }
-        else {
-            id_ = *freed_IDs.begin();
-            assigned_IDs.insert(id_);
-            freed_IDs.erase(id_);
-        }
-    };
-
-    Package(int x){id_ = x;};
+    Package();
+    Package &operator=(Package &&p) = default;
+    Package(int x) { id_ = x; };
     Package(const Package &p) { id_ = p.get_id(); };
+    Package(Package &&p) = default;
     ElementID get_id() const;
     ~Package();
 };

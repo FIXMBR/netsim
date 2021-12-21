@@ -42,7 +42,7 @@ public:
 
     void push(Package &&package) { stockPile_.push_back(package); };
     bool empty() const { return stockPile_.empty(); };
-    size_type size() const { return stockPile_.size(); };
+    size_type size() const { return size_type(stockPile_.size()); };
 
     PackageQueueType get_queue_type() const { return packageQueueType_; };
 
