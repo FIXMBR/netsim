@@ -7,8 +7,7 @@
 #include <set>
 #include "types.hpp"
 
-class Package
-{
+class Package{
 private:
     static std::set<ElementID> assigned_IDs; //przechowywać będzie przydzielone obecnie ID
     static std::set<ElementID> freed_IDs;    //przechowywać będzie ID kiedyś użyte, ale obecnie zwolnione
