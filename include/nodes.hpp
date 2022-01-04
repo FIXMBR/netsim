@@ -22,34 +22,41 @@ class ReceiverPreferences
 private:
     using preferences_t = std::map<IPackageReceiver *, double>;
     using const_iterator = preferences_t::const_iterator;
+    preferences_t preferences_;
 
 public:
     ReceiverPreferences(ProbabilityGenerator pg);
     void add_receiver(IPackageReceiver *r);
     void remove_receiver(IPackageReceiver *r);
     IPackageReceiver *choose_receiver();
-    preferences_t &get_preferences() const;
+    const preferences_t &get_preferences() const { return preferences_; };
 };
 
 class PackageSender
 {
 private:
+    std::optional<Package> sending_buffer_ = std::nullopt;
+
 public:
     ReceiverPreferences receiver_preferences_;
     PackageSender(PackageSender &&);
     void send_package();
 
 protected:
-    std::optional<Package> &get_sending_buffer() const;
+    const std::optional<Package> &get_sending_buffer() const { return sending_buffer_; };
 };
 
 class Ramp : PackageSender
 {
+private:
+    TimeOffset timeOffset_; //to może być źle
+    ElementID id_;          //to jeszcze bardziej
+
 public:
     Ramp(ElementID id, TimeOffset di);
     void deliver_goods(Time t);
-    TimeOffset get_delivery_interval() const;
-    ElementID get_id() const;
+    TimeOffset get_delivery_interval() const { return timeOffset_; };
+    ElementID get_id() const { return id_; };
 };
 
 class Worker
