@@ -4,17 +4,21 @@
 
 #include <optional>
 #include <map>
+#include <memory>
 #include "package.hpp"
 #include "types.hpp"
 #include "storage_types.hpp"
 // #include "helpers.hpp"
 
-class IPackageReceiver
+class IPackageReceiver //tutaj trzeba dodać get_receiver_type() dopiero po wysłaniu węzłów sieci!!!
 {
 public:
-    virtual IPackageStockPile::const_iterator cbegin();
-
+    [[nodiscard]] virtual IPackageStockPile::const_iterator cbegin() const = 0; // zwraca stały iterator na pierwszy element kontenera
+    [[nodiscard]] virtual IPackageStockPile::const_iterator cend() const = 0 ; // zwraca stały iterator na ostatni element kontenera
+    [[nodiscard]] virtual IPackageStockPile::const_iterator begin() const = 0; //
+    [[nodiscard]] virtual IPackageStockPile::const_iterator end() const = 0 ;
     virtual void receive_package(Package &&p) = 0;
+    [[nodiscard]] virtual ElementID get_id() const = 0;
 };
 
 class ReceiverPreferences
@@ -22,10 +26,11 @@ class ReceiverPreferences
 private:
     using preferences_t = std::map<IPackageReceiver *, double>;
     using const_iterator = preferences_t::const_iterator;
+    void calculatePropability();
     preferences_t preferences_;
-
+    ProbabilityGenerator pg_;
 public:
-    ReceiverPreferences(ProbabilityGenerator pg);
+    ReceiverPreferences(ProbabilityGenerator pg) : pg_(pg){};
     void add_receiver(IPackageReceiver *r);
     void remove_receiver(IPackageReceiver *r);
     IPackageReceiver *choose_receiver();
@@ -59,18 +64,21 @@ public:
     ElementID get_id() const { return id_; };
 };
 
-class Worker
+class Worker : IPackageReceiver, PackageSender, IPackageQueue
 {
+private:
+    TimeOffset time_offset_;
+    std::unique_ptr<IPackageQueue> q_;
+    ElementID id_;
+    std::optional<Package> buffer_queue_ = std::nullopt;
 public:
-    Worker(id
-           : ElemendID, pd
-           : TimeOffset, q
-           : std::unique_ptr<IPackageQueue>){};
-    void do_work(t
-                 : Time){};
-    int get_processing_duration(void) { return TimeOffset; };
-    int get_package_processing_start_time(void) const { return Time; };
+    static Time time_;
+    Worker(ElementID id, TimeOffset pd, std::unique_ptr<IPackageQueue> q) {}; //tutaj trzeba coś zainizjalizować (ciekawe co)
+    void do_work(Time time){};
+    TimeOffset get_processing_duration(void) const {return time_offset_; };
+    Time get_package_processing_start_time(void) const {return time_;};
 };
+
 
 //Odbiorca półproduktów
 //Interfejs IPackageReceiver powinien posiadać metodę do “odbioru” półproduktu, metody delegujące2) pozwalające na uzyskanie dostępu
@@ -90,10 +98,12 @@ public:
 
 class Storehouse
 {
-    Storehouse(id
-               : ElementID, d
-               : std::unique_ptr<IPackageStockpile>);
+private:
+
+public:
+    Storehouse(ElementID id, std::unique_ptr<IPackageStockPile> d);
 };
+
 
 #endif //NODES_HPP
 
