@@ -33,35 +33,35 @@ void ReceiverPreferences::calculatePropability() {
 //
 IPackageReceiver * ReceiverPreferences::choose_receiver(){
 
-//    std::map<std::string, int> receiver_pref = {
-//            {"adres1", 0.25},
-//            {"adres2", 0.5},
-//            {"adres3", 0.25}
-//    };
+    std::map<std::string, int> receiver_pref = {
+            {"adres1", 0.33},
+            {"adres2", 0.33},
+            {"adres3", 0.33}
+    };
 
-    double losowaliczba = pd_();  //generuje losowa liczbe z przedzialu (0,1)
+    double losowaliczba = rand() % 1;  //generuje losowa liczbe z przedzialu (0,1)
     double suma = 0;
     std::map<std::string, int>::iterator item;
 
-    for (const auto& [key, value] : preferences_) {
+    for (item = receiver_pref.begin(); item != receiver_pref.end(); item++) {
         if (losowaliczba < suma) {
-            suma += value;
+            suma += 0.33;
         }
         if (losowaliczba > suma) {
-            return key;
+            return item->first ;
         }
     }
-    return preferences_.rbegin()->first;
+
 };
 
-
 void Ramp::deliver_goods(Time t) {
-//    if (di_ == 1){
-//        push_package(Package());
-//    }
-
-    if (t % di_ == 0) {
-        push_package(Package());
+    if (timeOffset_ == 1){
+        push_(Package());
+    }
+    else{
+        if (t % timeOffset_ == 1) {
+            push_(Package());
+        }
     }
 }
 
