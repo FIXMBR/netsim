@@ -19,7 +19,7 @@ void ReceiverPreferences::calculatePropability()
     size_t size = preferences_.size();
     for (const auto &[key, value] : preferences_)
     {
-        preferences_[key] = 1 / size;
+        preferences_[key] = 1.0 / float(size);
     }
 };
 
@@ -41,7 +41,7 @@ IPackageReceiver *ReceiverPreferences::choose_receiver()
     //            {"adres3", 0.25}
     //    };
 
-    double losowaliczba = pd_(); //generuje losowa liczbe z przedzialu (0,1)
+    double losowaliczba = pg_(); //generuje losowa liczbe z przedzialu (0,1)
     double suma = 0;
     std::map<std::string, int>::iterator item;
 
