@@ -79,11 +79,11 @@ private:
     ElementID id_;
     TimeOffset pd_; //jak długo się coś robi
     std::optional<Package> buffer_queue = std::nullopt;
-    //work_start_time=0;
+    Time work_start_time = 0;
 public:
     static Time time_;
     Worker(ElementID id, TimeOffset pd, std::unique_ptr<IPackageQueue> q) : q_(std::move(q)), id_(id), pd_(pd), buffer_queue(std::nullopt){};
-    void do_work(Time time){};
+    void do_work(Time time);
     TimeOffset get_processing_duration(void) const { return pd_; };
     Time get_package_processing_start_time(void) const { return time_; };
 };
@@ -104,8 +104,7 @@ public:
 //    virtual ~IPackageStockPile(){};
 //};
 
-class Storehouse
-{
+class Storehouse : IPackageReceiver{
 private:
 public:
     Storehouse(ElementID id, std::unique_ptr<IPackageStockPile> d);

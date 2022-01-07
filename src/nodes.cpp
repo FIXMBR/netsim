@@ -23,6 +23,21 @@ void ReceiverPreferences::calculatePropability()
     }
 };
 
+void Worker::do_work(Time time)
+{
+    if(not buffer_queue && not q_->empty()){
+        buffer_queue = q_->pop();
+        work_start_time = time;
+    }
+
+    if(buffer_queue) {
+        if(pd_ - 1  == work_start_time - time){
+            push_package(std::move(buffer_queue.value()));
+            buffer_queue = std::nullopt;
+        }
+    }
+}
+
 //mapa = {adres1:0.33, adres2:0.33,adres3:0.33}
 //maps[adres1] -> 0.33
 //losowaliczba
