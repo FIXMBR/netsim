@@ -53,8 +53,10 @@ public:
     virtual ~PackageSender() = default;
 
 protected:
-    const std::optional<Package> &get_sending_buffer() const { return sending_buffer_; };
-    void push_package(Package &&);
+    const std::optional<Package>& get_sending_buffer() const { return sending_buffer_; };
+
+    void push_package(Package&& p) { sending_buffer_ = p; };
+
 };
 
 class Ramp : PackageSender
