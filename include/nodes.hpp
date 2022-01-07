@@ -49,7 +49,7 @@ public:
 
 protected:
     const std::optional<Package> &get_sending_buffer() const { return sending_buffer_; };
-    void push_(Package&&);
+    void push_package(Package&&);
 };
 
 class Ramp : PackageSender
