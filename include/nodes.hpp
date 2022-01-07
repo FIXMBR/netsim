@@ -8,7 +8,7 @@
 #include "package.hpp"
 #include "types.hpp"
 #include "storage_types.hpp"
-// #include "helpers.hpp"
+#include "helpers.hpp"
 
 class IPackageReceiver //tutaj trzeba dodać get_receiver_type() dopiero po wysłaniu węzłów sieci!!!
 {
@@ -30,6 +30,7 @@ private:
     preferences_t preferences_;
     ProbabilityGenerator pg_;
 public:
+    ReceiverPreferences() = default;
     ReceiverPreferences(ProbabilityGenerator pg) : pg_(pg){};
     void add_receiver(IPackageReceiver *r);
     void remove_receiver(IPackageReceiver *r);
@@ -44,24 +45,26 @@ private:
 
 public:
     ReceiverPreferences receiver_preferences_;
-    PackageSender(PackageSender &&);
+    PackageSender() {receiver_preferences_ = ReceiverPreferences(probability_generator); };
+    PackageSender(PackageSender &&) = default;
     void send_package();
 
+    virtual ~PackageSender() = default;
 protected:
     const std::optional<Package> &get_sending_buffer() const { return sending_buffer_; };
-    void push_(Package&&);
+    void push_package(Package&&);
 };
 
 class Ramp : PackageSender
 {
 private:
-    TimeOffset timeOffset_; //to może być źle
+    TimeOffset di_; //to może być źle
     ElementID id_;          //to jeszcze bardziej
 
 public:
-    Ramp(ElementID id, TimeOffset di);
+    Ramp(ElementID id, TimeOffset di): di_(di), id_(id){};
     void deliver_goods(Time t);
-    TimeOffset get_delivery_interval() const { return timeOffset_; };
+    TimeOffset get_delivery_interval() const { return di_; };
     ElementID get_id() const { return id_; };
 };
 
@@ -87,15 +90,15 @@ public:
 // oraz metody identyfikujące danego odbiorcę (tj. jego typ oraz ID).
 //Definiując powyższe metody delegujące skorzystaj z typu IPackageStockpile::const_iterator (zob. tu).
 
-class IPackageStockPile
-{
-public:
-    using const_iterator = std::list<Package>;
-    virtual void push(Package &&package) = 0;
-    virtual bool empty() const = 0;
-    virtual size_type size() const = 0;
-    virtual ~IPackageStockPile(){};
-};
+//class IPackageStockPile
+//{
+//public:
+//    using const_iterator = std::list<Package>;
+//    virtual void push(Package &&package) = 0;
+//    virtual bool empty() const = 0;
+//    virtual size_type size() const = 0;
+//    virtual ~IPackageStockPile(){};
+//};
 
 class Storehouse
 {
