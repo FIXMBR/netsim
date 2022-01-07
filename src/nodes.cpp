@@ -1,26 +1,27 @@
 //1b: Bartoszewski (406690), Gajek (400365), Gąsior (407326), Kowalczyk (406185)
 #include "nodes.hpp"
-#include<map>
+#include <map>
 
-void ReceiverPreferences::add_receiver(IPackageReceiver *r) {
-    preferences_.insert({r,0.0});
+void ReceiverPreferences::add_receiver(IPackageReceiver *r)
+{
+    preferences_.insert({r, 0.0});
     calculatePropability();
 };
 
-void ReceiverPreferences::remove_receiver(IPackageReceiver *r) {
+void ReceiverPreferences::remove_receiver(IPackageReceiver *r)
+{
     preferences_.erase(r);
     calculatePropability();
 };
 
-void ReceiverPreferences::calculatePropability() {
-    size_t size =  preferences_.size();
-    for (const auto& [key, value] : preferences_) {
-        preferences_[key] = 1/size;
+void ReceiverPreferences::calculatePropability()
+{
+    size_t size = preferences_.size();
+    for (const auto &[key, value] : preferences_)
+    {
+        preferences_[key] = 1.0 / float(size);
     }
 };
-
-
-
 
 //mapa = {adres1:0.33, adres2:0.33,adres3:0.33}
 //maps[adres1] -> 0.33
@@ -31,37 +32,42 @@ void ReceiverPreferences::calculatePropability() {
 //  losowaliczba < suma
 //    return item
 //
-IPackageReceiver * ReceiverPreferences::choose_receiver(){
+IPackageReceiver *ReceiverPreferences::choose_receiver()
+{
 
-    std::map<std::string, int> receiver_pref = {
-            {"adres1", 0.33},
-            {"adres2", 0.33},
-            {"adres3", 0.33}
-    };
+    //    std::map<std::string, int> receiver_pref = {
+    //            {"adres1", 0.25},
+    //            {"adres2", 0.5},
+    //            {"adres3", 0.25}
+    //    };
 
-    double losowaliczba = rand() % 1;  //generuje losowa liczbe z przedzialu (0,1)
+    double losowaliczba = pg_(); //generuje losowa liczbe z przedzialu (0,1)
     double suma = 0;
     std::map<std::string, int>::iterator item;
 
-    for (item = receiver_pref.begin(); item != receiver_pref.end(); item++) {
-        if (losowaliczba < suma) {
-            suma += 0.33;
+    for (const auto &[key, value] : preferences_)
+    {
+        if (losowaliczba < suma)
+        {
+            suma += value;
         }
-        if (losowaliczba > suma) {
-            return item->first ;
+        if (losowaliczba > suma)
+        {
+            return key;
         }
     }
-
+    return preferences_.rbegin()->first;
 };
 
-void Ramp::deliver_goods(Time t) {
-    if (timeOffset_ == 1){
+void Ramp::deliver_goods(Time t)
+{
+    //    if (di_ == 1){
+    //        push_package(Package());
+    //    }
+
+    if (t % di_ == 0)
+    {
         push_package(Package());
-    }
-    else{
-        if (t % timeOffset_ == 1) {
-            push_package(Package());
-        }
     }
 }
 
