@@ -75,13 +75,14 @@ class Worker : IPackageReceiver, IPackageQueue
 private:
     std::unique_ptr<IPackageQueue> q_;
     ElementID id_;
-    TimeOffset time_offset_;
+    TimeOffset pd_; //jak długo się coś robi
     std::optional<Package> buffer_queue = std::nullopt;
+    //work_start_time=0;
 public:
     static Time time_;
-    Worker(ElementID id, TimeOffset pd, std::unique_ptr<IPackageQueue> q) : q_(std::move(q)), id_(id), time_offset_(pd), buffer_queue(std::nullopt) {};
+    Worker(ElementID id, TimeOffset pd, std::unique_ptr<IPackageQueue> q) : q_(std::move(q)), id_(id), pd_(pd), buffer_queue(std::nullopt){};
     void do_work(Time time){};
-    TimeOffset get_processing_duration(void) const { return time_offset_; };
+    TimeOffset get_processing_duration(void) const { return pd_; };
     Time get_package_processing_start_time(void) const { return time_; };
 };
 
