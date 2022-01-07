@@ -75,19 +75,11 @@ class Worker : IPackageReceiver, IPackageQueue
 private:
     std::unique_ptr<IPackageQueue> q_;
     ElementID id_;
-<<<<<<< HEAD
     TimeOffset time_offset_;
     std::optional<Package> buffer_queue = std::nullopt;
 public:
     static Time time_;
     Worker(ElementID id, TimeOffset pd, std::unique_ptr<IPackageQueue> q) : q_(std::move(q)), id_(id), time_offset_(pd), buffer_queue(std::nullopt) {};
-=======
-    std::optional<Package> buffer_queue_ = std::nullopt;
-
-public:
-    static Time time_;
-    Worker(ElementID id, TimeOffset pd, std::unique_ptr<IPackageQueue> q){}; //tutaj trzeba coś zainizjalizować (ciekawe co)
->>>>>>> 23544f27f3fde1e563379bb25bfab6ce3094453b
     void do_work(Time time){};
     TimeOffset get_processing_duration(void) const { return time_offset_; };
     Time get_package_processing_start_time(void) const { return time_; };
