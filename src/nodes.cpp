@@ -86,4 +86,11 @@ void Ramp::deliver_goods(Time t)
     }
 }
 
+void PackageSender::send_package(){
+    if(sending_buffer_ != std::nullopt){
+        receiver_preferences_.choose_receiver()->receive_package(std::move(sending_buffer_.value())); //TODO test
+        sending_buffer_ = std::nullopt;//TODO sprawdzić czy potrzebne, może move sam to robi czy coś
+    }
+}
+
 //1b: Bartoszewski (406690), Gajek (400365), Gąsior (407326), Kowalczyk (406185)

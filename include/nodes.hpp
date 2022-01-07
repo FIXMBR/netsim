@@ -13,12 +13,12 @@
 class IPackageReceiver //tutaj trzeba dodać get_receiver_type() dopiero po wysłaniu węzłów sieci!!!
 {
 public:
-    [[nodiscard]] virtual IPackageStockPile::const_iterator cbegin() const = 0; // zwraca stały iterator na pierwszy element kontenera
-    [[nodiscard]] virtual IPackageStockPile::const_iterator cend() const = 0;   // zwraca stały iterator na ostatni element kontenera
-    [[nodiscard]] virtual IPackageStockPile::const_iterator begin() const = 0;  //
-    [[nodiscard]] virtual IPackageStockPile::const_iterator end() const = 0;
+    virtual IPackageStockPile::const_iterator cbegin() const = 0; // zwraca stały iterator na pierwszy element kontenera
+    virtual IPackageStockPile::const_iterator cend() const = 0;   // zwraca stały iterator na ostatni element kontenera
+    virtual IPackageStockPile::const_iterator begin() const = 0;  //
+    virtual IPackageStockPile::const_iterator end() const = 0;
     virtual void receive_package(Package &&p) = 0;
-    [[nodiscard]] virtual ElementID get_id() const = 0;
+    virtual ElementID get_id() const = 0;
 };
 
 class ReceiverPreferences
@@ -39,15 +39,17 @@ public:
     const preferences_t &get_preferences() const { return preferences_; };
 };
 
-class PackageSender
-{
+class PackageSender {
 private:
     std::optional<Package> sending_buffer_ = std::nullopt;
 
 public:
     ReceiverPreferences receiver_preferences_;
+
     PackageSender() { receiver_preferences_ = ReceiverPreferences(probability_generator); };
-    PackageSender(PackageSender &&) = default;
+
+    PackageSender(PackageSender&&) = default;
+
     void send_package();
 
     virtual ~PackageSender() = default;
@@ -72,7 +74,7 @@ public:
     ElementID get_id() const { return id_; };
 };
 
-class Worker : IPackageReceiver, IPackageQueue
+class Worker : IPackageReceiver, PackageSender
 {
 private:
     std::unique_ptr<IPackageQueue> q_;
@@ -86,6 +88,8 @@ public:
     void do_work(Time time);
     TimeOffset get_processing_duration(void) const { return pd_; };
     Time get_package_processing_start_time(void) const { return time_; };
+    ElementID get_id() const override {return id_; };
+    void receive_package(Package &&p) override{ q_->push(std::move(p)); };
 };
 
 //Odbiorca półproduktów
@@ -106,8 +110,13 @@ public:
 
 class Storehouse : IPackageReceiver{
 private:
+    std::unique_ptr<IPackageQueue> q_;
+    ElementID id_;
+    std::unique_ptr<IPackageStockPile> d_;
 public:
-    Storehouse(ElementID id, std::unique_ptr<IPackageStockPile> d);
+    Storehouse(ElementID id, std::unique_ptr<IPackageStockPile> d = std::make_unique<IPackageStockPile> (PackageQueue(PackageQueueType::LIFO))) : id_(id), d_(std::move(d)) {};
+    ElementID get_id() const override {return id_; };
+    void receive_package(Package &&p) override{  q_->push(std::move(p));};
 };
 
 #endif //NODES_HPP
