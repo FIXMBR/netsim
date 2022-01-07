@@ -56,11 +56,11 @@ IPackageReceiver * ReceiverPreferences::choose_receiver(){
 
 void Ramp::deliver_goods(Time t) {
     if (timeOffset_ == 1){
-        push_(Package());
+        push_package(Package());
     }
     else{
         if (t % timeOffset_ == 1) {
-            push_(Package());
+            push_package(Package());
         }
     }
 }
