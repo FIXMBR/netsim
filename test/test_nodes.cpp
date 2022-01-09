@@ -16,7 +16,8 @@ using ::std::endl;
 
 // -----------------
 
-TEST(WorkerTest, HasBuffer) {
+TEST(WorkerTest, HasBuffer)
+{
     // Test scenariusza opisanego na stronie:
     // http://home.agh.edu.pl/~mdig/dokuwiki/doku.php?id=teaching:programming:soft-dev:topics:net-simulation:part_nodes#bufor_aktualnie_przetwarzanego_polproduktu
 
@@ -28,7 +29,7 @@ TEST(WorkerTest, HasBuffer) {
     ++t;
     w.receive_package(Package(2));
     w.do_work(t);
-    auto& buffer = w.get_sending_buffer();
+    auto &buffer = w.get_sending_buffer();
 
     ASSERT_TRUE(buffer.has_value());
     EXPECT_EQ(buffer.value().get_id(), 1);
@@ -36,7 +37,8 @@ TEST(WorkerTest, HasBuffer) {
 
 // -----------------
 
-TEST(RampTest, IsDeliveryOnTime) {
+TEST(RampTest, IsDeliveryOnTime)
+{
 
     Ramp r(1, 2);
     auto recv = std::make_unique<Storehouse>(1);
@@ -56,7 +58,8 @@ TEST(RampTest, IsDeliveryOnTime) {
 
 // -----------------
 
-TEST(ReceiverPreferencesTest, AddReceiversRescalesProbability) {
+TEST(ReceiverPreferencesTest, AddReceiversRescalesProbability)
+{
     // Upewnij się, że dodanie odbiorcy spowoduje przeskalowanie prawdopodobieństw.
     ReceiverPreferences rp;
 
@@ -72,7 +75,8 @@ TEST(ReceiverPreferencesTest, AddReceiversRescalesProbability) {
     EXPECT_EQ(rp.get_preferences().at(&r2), 0.5);
 }
 
-TEST(ReceiverPreferencesTest, RemoveReceiversRescalesProbability) {
+TEST(ReceiverPreferencesTest, RemoveReceiversRescalesProbability)
+{
     // Upewnij się, że usunięcie odbiorcy spowoduje przeskalowanie pozostałych prawdopodobieństw.
     ReceiverPreferences rp;
 
@@ -92,10 +96,12 @@ using ::testing::Return;
 // Dla czytelności nazewnictwa grupy scenariuszy testowych (oraz ponieważ być
 // może zajdzie konieczność korzystania z więcej niż jednej "fixturki") tworzymy
 // osobną klasę dziedziczącą po `GlobalFunctionFixture`.
-class ReceiverPreferencesChoosingTest : public GlobalFunctionsFixture {
+class ReceiverPreferencesChoosingTest : public GlobalFunctionsFixture
+{
 };
 
-TEST_F(ReceiverPreferencesChoosingTest, ChooseReceiver) {
+TEST_F(ReceiverPreferencesChoosingTest, ChooseReceiver)
+{
     // Upewnij się, że odbiorcy wybierani są z właściwym prawdopodobieństwem.
 
     EXPECT_CALL(global_functions_mock, generate_canonical()).WillOnce(Return(0.3)).WillOnce(Return(0.7));
@@ -106,10 +112,14 @@ TEST_F(ReceiverPreferencesChoosingTest, ChooseReceiver) {
     rp.add_receiver(&r1);
     rp.add_receiver(&r2);
 
-    if (rp.begin()->first == &r1) {
+    if (rp.begin()->first == &r1)
+    {
         EXPECT_EQ(rp.choose_receiver(), &r1);
+
         EXPECT_EQ(rp.choose_receiver(), &r2);
-    } else {
+    }
+    else
+    {
         EXPECT_EQ(rp.choose_receiver(), &r2);
         EXPECT_EQ(rp.choose_receiver(), &r1);
     }
@@ -117,8 +127,8 @@ TEST_F(ReceiverPreferencesChoosingTest, ChooseReceiver) {
 
 // -----------------
 
-using ::testing::Return;
 using ::testing::_;
+using ::testing::Return;
 
 // Ponieważ `IPackageStockpile::const_iterator` to iterator na (niestandardowy)
 // typ Package, który nie przeciąża operatora <<, Google Mock nie ma pojęcia
@@ -128,20 +138,22 @@ using ::testing::_;
 // w sytuacji, gdy zachodzi potrzeba wypisania obiektu niestandardowego typu
 // - w tym przypadku `IPackageStockpile::const_iterator`.
 // zob. https://github.com/google/googlemock/blob/master/googlemock/docs/v1_5/CookBook.md#teaching-google-mock-how-to-print-your-values
-void PrintTo(const IPackageStockpile::const_iterator& it, ::std::ostream* os) {
+void PrintTo(const IPackageStockpile::const_iterator &it, ::std::ostream *os)
+{
     *os << it->get_id();
 }
 
-class PackageSenderFixture : public PackageSender {
+class PackageSenderFixture : public PackageSender
+{
     // Nie sposób w teście wykorzystać prywetnej metody `PackageSender::push_package()`,
     // dlatego do celów testowych stworzona została implementacja zawierająca
     // metodę `push_package()` w sekcji publicznej.
 public:
-    void push_package(Package&& package) { PackageSender::push_package(std::move(package)); }
+    void push_package(Package &&package) { PackageSender::push_package(std::move(package)); }
 };
 
-
-TEST(PackageSenderTest, SendPackage) {
+TEST(PackageSenderTest, SendPackage)
+{
     MockReceiver mock_receiver;
     // Oczekujemy, że metoda `receive_package()` obiektu `mock_receiver` zostanie
     // wywołana dwukrotnie, z dowolnym argumentem (symbol `_`).

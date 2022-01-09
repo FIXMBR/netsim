@@ -1,36 +1,49 @@
 #include <iostream>
 #include "storage_types.hpp"
+#include "nodes.hpp"
 
 int main()
 {
+    Worker w(1, 2, std::make_unique<PackageQueue>(PackageQueueType::FIFO));
+    Time t = 1;
+
+    w.receive_package(Package(1));
+    w.do_work(t);
+    ++t;
+
+    w.do_work(t);
+    ++t;
+
     std::cout << "Hello, World!" << std::endl;
-    // printf("jajcos");
+    std::cout << w.get_sending_buffer().has_value() << std::endl;
 
-    PackageQueue coolkolejka(PackageQueueType::FIFO);
+    // // printf("jajcos");
 
-    coolkolejka.push(Package(1));
-    coolkolejka.push(Package(3));
+    // PackageQueue coolkolejka(PackageQueueType::FIFO);
 
-    Package p(std::move(coolkolejka.pop()));
+    // coolkolejka.push(Package(1));
+    // coolkolejka.push(Package(3));
 
-    std::cout << p.get_id() << std::endl;
+    // Package p(std::move(coolkolejka.pop()));
 
-    p = coolkolejka.pop();
+    // std::cout << p.get_id() << std::endl;
 
-    std::cout << p.get_id() << std::endl;
+    // p = coolkolejka.pop();
 
-    PackageQueue coolkolejka2(PackageQueueType::LIFO);
+    // std::cout << p.get_id() << std::endl;
 
-    coolkolejka2.push(Package(1));
-    coolkolejka2.push(Package(3));
+    // PackageQueue coolkolejka2(PackageQueueType::LIFO);
 
-    p = coolkolejka2.pop();
+    // coolkolejka2.push(Package(1));
+    // coolkolejka2.push(Package(3));
 
-    std::cout << p.get_id() << std::endl;
+    // p = coolkolejka2.pop();
 
-    p = coolkolejka2.pop();
+    // std::cout << p.get_id() << std::endl;
 
-    std::cout << p.get_id() << std::endl;
+    // p = coolkolejka2.pop();
 
-    return 0;
+    // std::cout << p.get_id() << std::endl;
+
+    // return 0;
 }

@@ -25,13 +25,16 @@ void ReceiverPreferences::calculatePropability()
 
 void Worker::do_work(Time time)
 {
-    if(not buffer_queue && not q_->empty()){
+    if (not buffer_queue && not q_->empty())
+    {
         buffer_queue = q_->pop();
         work_start_time = time;
     }
 
-    if(buffer_queue) {
-        if(pd_ - 1  == work_start_time - time){
+    if (buffer_queue)
+    {
+        if (pd_ - 1 == time - work_start_time)
+        {
             push_package(std::move(buffer_queue.value()));
             buffer_queue = std::nullopt;
         }
@@ -58,20 +61,17 @@ IPackageReceiver *ReceiverPreferences::choose_receiver()
 
     double losowaliczba = pg_(); //generuje losowa liczbe z przedzialu (0,1)
     double suma = 0;
-    std::map<std::string, int>::iterator item;
+    // std::map<std::string, int>::iterator item;
 
     for (const auto &[key, value] : preferences_)
     {
+        suma += value;
         if (losowaliczba < suma)
-        {
-            suma += value;
-        }
-        if (losowaliczba > suma)
         {
             return key;
         }
     }
-    return preferences_.rbegin()->first;
+    return preferences_.begin()->first;
 };
 
 void Ramp::deliver_goods(Time t)
@@ -80,16 +80,18 @@ void Ramp::deliver_goods(Time t)
     //        push_package(Package());
     //    }
 
-    if (t % di_ == 0)
+    if ((t + di_ - 1) % (di_) == 0) //TODO czy to jest dobrze na pewno XD
     {
         push_package(Package());
     }
 }
 
-void PackageSender::send_package(){
-    if(sending_buffer_ != std::nullopt){
+void PackageSender::send_package()
+{
+    if (sending_buffer_ != std::nullopt)
+    {
         receiver_preferences_.choose_receiver()->receive_package(std::move(sending_buffer_.value())); //TODO test
-        sending_buffer_ = std::nullopt;//TODO sprawdzić czy potrzebne, może move sam to robi czy coś
+        sending_buffer_ = std::nullopt;                                                               //TODO sprawdzić czy potrzebne, może move sam to robi czy coś
     }
 }
 

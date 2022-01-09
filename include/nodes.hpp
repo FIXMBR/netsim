@@ -31,8 +31,8 @@ private:
     ProbabilityGenerator pg_;
 
 public:
-    ReceiverPreferences() = default;
-    ReceiverPreferences(ProbabilityGenerator pg) : pg_(pg){};
+    // ReceiverPreferences() = default;
+    ReceiverPreferences(ProbabilityGenerator pg = probability_generator) : pg_(pg){};
     void add_receiver(IPackageReceiver *r);
     void remove_receiver(IPackageReceiver *r);
     IPackageReceiver *choose_receiver();
@@ -52,7 +52,7 @@ private:
 public:
     ReceiverPreferences receiver_preferences_;
 
-    PackageSender() { receiver_preferences_ = ReceiverPreferences(probability_generator); };
+    PackageSender() { receiver_preferences_ = ReceiverPreferences(); };
 
     PackageSender(PackageSender &&) = default;
 
@@ -121,18 +121,18 @@ public:
 class Storehouse : public IPackageReceiver
 {
 private:
-    std::unique_ptr<IPackageQueue> q_;
+    // std::unique_ptr<IPackageQueue> q_;
     ElementID id_;
     std::unique_ptr<IPackageStockpile> d_;
 
 public:
     Storehouse(ElementID id, std::unique_ptr<IPackageStockpile> d = std::make_unique<PackageQueue>(PackageQueue(PackageQueueType::LIFO))) : id_(id), d_(std::move(d)){};
     ElementID get_id() const override { return id_; };
-    void receive_package(Package &&p) override { q_->push(std::move(p)); };
-    IPackageStockpile::const_iterator begin() const override { return q_->begin(); };
-    IPackageStockpile::const_iterator cbegin() const override { return q_->cbegin(); };
-    IPackageStockpile::const_iterator end() const override { return q_->end(); };
-    IPackageStockpile::const_iterator cend() const override { return q_->cend(); };
+    void receive_package(Package &&p) override { d_->push(std::move(p)); };
+    IPackageStockpile::const_iterator begin() const override { return d_->begin(); };
+    IPackageStockpile::const_iterator cbegin() const override { return d_->cbegin(); };
+    IPackageStockpile::const_iterator end() const override { return d_->end(); };
+    IPackageStockpile::const_iterator cend() const override { return d_->cend(); };
 };
 
 #endif // NODES_HPP
