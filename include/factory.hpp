@@ -5,6 +5,8 @@
 #include "types.hpp"
 #include "nodes.hpp"
 
+enum class NodeColor { UNVISITED, VISITED, VERIFIED };
+
 template <class Node>
 class NodeCollection
 {
@@ -59,8 +61,8 @@ private:
         }
 
         collection.remove_by_id(id);
-    };
-
+    }
+    bool has_reachable_storehouse(const PackageSender* sender, std::map<const PackageSender*, NodeColor>& node_colors) const;
 public:
     NodeCollection<Ramp>::const_iterator ramp_cbegin() const { return ramp_collection_.begin(); }; // zwraca stały iterator na pierwszy element kontenera
     NodeCollection<Ramp>::const_iterator ramp_cend() const { return ramp_collection_.cend(); };   // zwraca stały iterator na ostatni element kontenera

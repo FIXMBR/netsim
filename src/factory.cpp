@@ -34,13 +34,26 @@ void Factory::do_package_passing()
     std::for_each(ramp_collection_.begin(), ramp_collection_.end(), [](auto elem){elem.send_package(time);});
 }
 
-enum class NodeColor { UNVISITED, VISITED, VERIFIED };
+
 
 bool Factory::is_consistent() const {
-    kolor = 
+    std::map<PackageSender*,NodeColor> color;
+    std::for_each(worker_collection_.begin(), worker_collection_.end(), [color](auto elem){color.insert({elem,NodeColor::UNVISITED});});
+    std::for_each(storehouse_collection_.begin(), storehouse_collection_.end(), [color](auto elem){color.insert({elem,NodeColor::UNVISITED});});
+
+//    NodeCollection<Ramp>::iterator it;
+    for (auto& ramp : ramp_collection_) {
+        try {
+            has_reachable_storehouse(dynamic_cast<const PackageSender*>(&ramp),&color)
+        }
+        catch (std::logic_error){
+            return false;
+        }
+        return true;
+    }
 }
 
-bool has_reachable_storehouse(const PackageSender* sender, std::map<const PackageSender*, NodeColor>& node_colors){
+bool Factory::has_reachable_storehouse(const PackageSender* sender, std::map<const PackageSender*, NodeColor>& node_colors)const{
     if(node_colors[sender] == NodeColor::VERIFIED)
         return true;
     node_colors[sender] = NodeColor::VISITED;
