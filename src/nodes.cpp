@@ -6,13 +6,13 @@ void ReceiverPreferences::add_receiver(IPackageReceiver *r)
 {
     preferences_.insert({r, 0.0});
     calculatePropability();
-};
+}
 
 void ReceiverPreferences::remove_receiver(IPackageReceiver *r)
 {
     preferences_.erase(r);
     calculatePropability();
-};
+}
 
 void ReceiverPreferences::calculatePropability()
 {
@@ -21,7 +21,7 @@ void ReceiverPreferences::calculatePropability()
     {
         preferences_[key] = 1.0 / float(size);
     }
-};
+}
 
 void Worker::do_work(Time time)
 {
@@ -72,7 +72,7 @@ IPackageReceiver *ReceiverPreferences::choose_receiver()
         }
     }
     return preferences_.begin()->first;
-};
+}
 
 void Ramp::deliver_goods(Time t)
 {
