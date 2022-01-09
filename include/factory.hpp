@@ -40,13 +40,17 @@ private:
     container_t collection_;
 };
 
-template <class Node>
+
 class Factory{
 private:
     NodeCollection<Ramp> ramp_collection_;
     NodeCollection<Worker> worker_collection_;
     NodeCollection<Storehouse> storehouse_collection_;
-    void remove_receiver(NodeCollection<Node>& collection, ElementID id);
+    template <class Node> void remove_receiver(NodeCollection<Node>& collection, ElementID id){
+        for (auto& node : collection) {
+            node.receiver_preferences_.remove_receiver(receiver);
+        }
+    }
 
 public:
     NodeCollection<Ramp>::const_iterator ramp_cbegin() const { return ramp_collection_.begin(); }; // zwraca stały iterator na pierwszy element kontenera
@@ -69,7 +73,7 @@ public:
     NodeCollection<Storehouse>::iterator find_storehouse_by_id(ElementID id) {return storehouse_collection_.find_by_id(id); };
     NodeCollection<Storehouse>::const_iterator find_storehouse_by_id(ElementID id)const{return storehouse_collection_.find_by_id(id); };
 
-    bool is_consistent(void) const {return true; };//FIXME
+    bool is_consistent(void) const ;//FIXME
     void do_deliveries(Time time);
     void do_package_passing(void);
     void do_work(Time time);
