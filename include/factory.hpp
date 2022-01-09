@@ -47,10 +47,19 @@ private:
     NodeCollection<Worker> worker_collection_;
     NodeCollection<Storehouse> storehouse_collection_;
     template <class Node> void remove_receiver(NodeCollection<Node>& collection, ElementID id){
-        for (auto& node : collection) {
-            node.receiver_preferences_.remove_receiver(receiver);
+
+        typename NodeCollection<Node>::iterator receiver = collection.find_by_id(id);
+//        IPackageReceiver& receiver = collection.find_by_id(id);
+
+        for (auto& node : worker_collection_) {
+            node.receiver_preferences_.remove_receiver(&*receiver);
         }
-    }
+        for (auto& node : ramp_collection_) {
+            node.receiver_preferences_.remove_receiver(&*receiver);
+        }
+
+        collection.remove_by_id(id);
+    };
 
 public:
     NodeCollection<Ramp>::const_iterator ramp_cbegin() const { return ramp_collection_.begin(); }; // zwraca stały iterator na pierwszy element kontenera
@@ -59,9 +68,10 @@ public:
     NodeCollection<Ramp>::const_iterator ramp_end() const { return ramp_collection_.end(); };
 
     void add_ramp(Ramp&& r){ramp_collection_.add(std::move(r));};
-    void remove_ramp(ElementID id){remove_receiver(ramp_collection_,id);};
+    void remove_ramp(ElementID id){ramp_collection_.remove_by_id(id);};
     NodeCollection<Ramp>::iterator find_ramp_by_id(ElementID id) {return ramp_collection_.find_by_id(id); };
     NodeCollection<Ramp>::const_iterator find_ramp_by_id(ElementID id)const{return ramp_collection_.find_by_id(id); };
+
 
     NodeCollection<Storehouse>::const_iterator storehouse_cbegin() const { return storehouse_collection_.cbegin(); }; // zwraca stały iterator na pierwszy element kontenera
     NodeCollection<Storehouse>::const_iterator storehouse_cend() const { return storehouse_collection_.cend(); };   // zwraca stały iterator na ostatni element kontenera
@@ -69,9 +79,20 @@ public:
     NodeCollection<Storehouse>::const_iterator storehouse_end() const { return storehouse_collection_.end(); };
 
     void add_storehouse(Storehouse&& s){storehouse_collection_.add(std::move(s));};
-    void remove_storehouse(ElementID id){remove_receiver(storehouse_collection_,id);};
+//    void remove_storehouse(ElementID id){remove_receiver(storehouse_collection_,id);};
     NodeCollection<Storehouse>::iterator find_storehouse_by_id(ElementID id) {return storehouse_collection_.find_by_id(id); };
     NodeCollection<Storehouse>::const_iterator find_storehouse_by_id(ElementID id)const{return storehouse_collection_.find_by_id(id); };
+
+    NodeCollection<Worker>::const_iterator worker_cbegin() const { return worker_collection_.cbegin(); }; // zwraca stały iterator na pierwszy element kontenera
+    NodeCollection<Worker>::const_iterator worker_cend() const { return worker_collection_.cend(); };   // zwraca stały iterator na ostatni element kontenera
+    NodeCollection<Worker>::const_iterator worker_begin() const { return worker_collection_.begin(); };  //
+    NodeCollection<Worker>::const_iterator worker_end() const { return worker_collection_.end(); };
+
+    void add_worker(Worker&& s){worker_collection_.add(std::move(s));};
+    void remove_worker(ElementID id){remove_receiver(worker_collection_,id);};
+    NodeCollection<Worker>::iterator find_worker_by_id(ElementID id) {return worker_collection_.find_by_id(id); };
+    NodeCollection<Worker>::const_iterator find_worker_by_id(ElementID id)const{return worker_collection_.find_by_id(id); };
+
 
     bool is_consistent(void) const ;//FIXME
     void do_deliveries(Time time);
