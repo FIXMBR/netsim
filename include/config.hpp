@@ -2,7 +2,7 @@
 #define CONFIG_HPP_
 
 // ID ćwiczenia na zajęciach z C++
-#define EXERCISE_ID 2
+#define EXERCISE_ID 3
 
 #define EXERCISE_ID_PACKAGES    1
 #define EXERCISE_ID_NODES       2

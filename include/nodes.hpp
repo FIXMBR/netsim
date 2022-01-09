@@ -10,6 +10,12 @@
 #include "storage_types.hpp"
 #include "helpers.hpp"
 
+enum class ReceiverType
+{
+    WORKER,
+    STOREHOUSE
+};
+
 class IPackageReceiver // tutaj trzeba dodać get_receiver_type() dopiero po wysłaniu węzłów sieci!!!
 {
 public:
@@ -19,6 +25,7 @@ public:
     virtual IPackageStockpile::const_iterator end() const = 0;
     virtual void receive_package(Package &&p) = 0;
     virtual ElementID get_id() const = 0;
+    virtual ReceiverType get_receiver_type() const = 0;
 };
 
 class ReceiverPreferences
@@ -100,6 +107,7 @@ public:
     IPackageStockpile::const_iterator cbegin() const override { return q_->cbegin(); };
     IPackageStockpile::const_iterator end() const override { return q_->end(); };
     IPackageStockpile::const_iterator cend() const override { return q_->cend(); };
+    ReceiverType get_receiver_type() const override { return ReceiverType::STOREHOUSE; }
 };
 
 // Odbiorca półproduktów
@@ -133,6 +141,7 @@ public:
     IPackageStockpile::const_iterator cbegin() const override { return d_->cbegin(); };
     IPackageStockpile::const_iterator end() const override { return d_->end(); };
     IPackageStockpile::const_iterator cend() const override { return d_->cend(); };
+    ReceiverType get_receiver_type() const override { return ReceiverType::STOREHOUSE; }
 };
 
 #endif // NODES_HPP
