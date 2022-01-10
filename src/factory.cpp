@@ -78,13 +78,12 @@ bool Factory::has_reachable_storehouse(const PackageSender *sender, std::map<con
         return true;
     node_colors[sender] = NodeColor::VISITED;
 
-    //    jeśli `nadawca` nie ma zdefiniowanych odbiorców: //FIXME Ktoś ma jakiś pomysł?
-    if (sender->receiver_preferences_.get_preferences().empty())
+     if (sender->receiver_preferences_.get_preferences().empty())
     {
         throw std::logic_error("There is no reciver");
     }
     bool has_other_recivers_than_it = false;
-    //    for(jeśli typ odbiorcy to MAGAZYN): //FIXME Ktoś ma jakiś pomysł?
+
     for (const auto &el : sender->receiver_preferences_.get_preferences())
     {
         if (el.first->get_receiver_type() == ReceiverType::STOREHOUSE)

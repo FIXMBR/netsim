@@ -107,7 +107,7 @@ public:
     IPackageStockpile::const_iterator cbegin() const override { return q_->cbegin(); };
     IPackageStockpile::const_iterator end() const override { return q_->end(); };
     IPackageStockpile::const_iterator cend() const override { return q_->cend(); };
-    ReceiverType get_receiver_type() const override { return ReceiverType::STOREHOUSE; };
+    ReceiverType get_receiver_type() const override { return ReceiverType::WORKER; };
 };
 
 // Odbiorca półproduktów
