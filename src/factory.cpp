@@ -1,3 +1,4 @@
+//1b: Bartoszewski (406690), Gajek (400365), Gąsior (407326), Kowalczyk (406185)
 #include "factory.hpp"
 
 //template <class Node> void Factory::remove_receiver(NodeCollection<Node>& collection,  ElementID id){
@@ -112,3 +113,4 @@ bool Factory::has_reachable_storehouse(const PackageSender *sender, std::map<con
     else
         throw std::logic_error("There is no reciver");
 }
+//1b: Bartoszewski (406690), Gajek (400365), Gąsior (407326), Kowalczyk (406185)

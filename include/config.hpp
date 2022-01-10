@@ -1,3 +1,4 @@
+//1b: Bartoszewski (406690), Gajek (400365), Gąsior (407326), Kowalczyk (406185)
 #ifndef CONFIG_HPP_
 #define CONFIG_HPP_
 
@@ -21,3 +22,4 @@
 #endif
 
 #endif /* CONFIG_HPP_ */
+//1b: Bartoszewski (406690), Gajek (400365), Gąsior (407326), Kowalczyk (406185)

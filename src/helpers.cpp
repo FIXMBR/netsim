@@ -1,3 +1,4 @@
+//1b: Bartoszewski (406690), Gajek (400365), Gąsior (407326), Kowalczyk (406185)
 #include "helpers.hpp"
 
 #include <cstdlib>
@@ -16,3 +17,4 @@ double default_probability_generator()
 }
 
 std::function<double()> probability_generator = default_probability_generator;
+//1b: Bartoszewski (406690), Gajek (400365), Gąsior (407326), Kowalczyk (406185)

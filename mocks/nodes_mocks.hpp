@@ -1,3 +1,4 @@
+//1b: Bartoszewski (406690), Gajek (400365), Gąsior (407326), Kowalczyk (406185)
 #ifndef NODES_MOCKS_HPP_
 #define NODES_MOCKS_HPP_
 
@@ -29,3 +30,4 @@ public:
 };
 
 #endif /* MOCKS_GLOBAL_FUNCTIONS_MOCK_HPP_ */
+//1b: Bartoszewski (406690), Gajek (400365), Gąsior (407326), Kowalczyk (406185)
