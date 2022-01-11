@@ -4,7 +4,8 @@ project(netsim)
 set(CMAKE_CXX_STANDARD 17)
 
 #add_compile_options(-Wno-unused-variable -Wno-unused-parameter -Wall -Wextra -Werror -Wpedantic -pedantic-errors -Wconversion)#TODO ten nie daje warningów o nieużywanych zmiennych
-add_compile_options(-Wall -Wextra -Werror -Wpedantic -pedantic-errors -Wconversion)
+#add_compile_options(-Wall -Wextra -Werror -Wpedantic -pedantic-errors -Wconversion) #flagi wczesniejsze
+add_compile_options(-Wall -Wextra -Werror -Wpedantic -pedantic-errors -Werror=switch) #flagi od prowadzacej
 
 include_directories(
         include
