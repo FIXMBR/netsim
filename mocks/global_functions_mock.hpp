@@ -1,3 +1,4 @@
+//1b: Bartoszewski (406690), Gajek (400365), Gąsior (407326), Kowalczyk (406185)
 #ifndef MOCKS_GLOBAL_FUNCTIONS_MOCK_HPP_
 #define MOCKS_GLOBAL_FUNCTIONS_MOCK_HPP_
 
@@ -43,3 +44,4 @@ protected:
 // ----
 
 #endif /* MOCKS_GLOBAL_FUNCTIONS_MOCK_HPP_ */
+//1b: Bartoszewski (406690), Gajek (400365), Gąsior (407326), Kowalczyk (406185)
