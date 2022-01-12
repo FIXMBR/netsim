@@ -110,6 +110,11 @@ public:
     void do_work(Time time);
 };
 
+
+Factory load_factory_structure(std::istream& is);
+Factory save_factory_structure(std::ostream& os, Factory& factory);
+
+
 #endif //NETSIM_FACTORY_HPP
 
 //1b: Bartoszewski (406690), Gajek (400365), Gąsior (407326), Kowalczyk (406185)

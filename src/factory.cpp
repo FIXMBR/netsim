@@ -113,4 +113,50 @@ bool Factory::has_reachable_storehouse(const PackageSender *sender, std::map<con
     else
         throw std::logic_error("There is no reciver");
 }
+
+struct ParsedLineData{
+    enum element_type{
+        Ramp,
+        Worker,
+        Storehouse,
+        Link
+    };
+    std::map<std::string, ParsedLineData> parameters;
+    for(auto&: i)
+        parameters[i] = 3
+}
+
+parse_line(std::string line){
+}
+
+
+parse_line(line : string)
+rozłóż linię na ID określający typ elementu oraz tokeny "klucz=wartość"
+każdy token rozłóż na parę (klucz, wartość)
+na podstawie ID oraz par (klucz, wartość) zwróć odpowiedni obiekt typu ParsedLineData
+
+
+Factory load_factory_structure(std::istream& is){
+//utwórz (pusty) obiekt typu Factory
+    Factory factory;
+    std::string line;
+
+    while (std::getline(is, line)) {
+        if(line[0] == ';' or line.empty())
+            continue;
+
+        parse_line(line);
+
+    }
+}
+
+//        dla każdej linii w pliku
+//jeśli linia pusta lub rozpoczyna się od znaku komentarza - przejdź do kolejnej linii
+//dokonaj parsowania linii
+//        w zależności od typu elementu - wykorzystaj pary (klucz, wartość) do poprawnego:
+//* zainicjalizowania obiektu właściwego typu węzła i dodania go do obiektu fabryki, albo
+//* utworzenia połączenia między zadanymi węzłami sieci
+//
+//zwróć wypełniony obiekt fabryki
+
 //1b: Bartoszewski (406690), Gajek (400365), Gąsior (407326), Kowalczyk (406185)

@@ -21,7 +21,7 @@ class IPackageReceiver // tutaj trzeba dodać get_receiver_type() dopiero po wys
 public:
     virtual IPackageStockpile::const_iterator cbegin() const = 0; // zwraca stały iterator na pierwszy element kontenera
     virtual IPackageStockpile::const_iterator cend() const = 0;   // zwraca stały iterator na ostatni element kontenera
-    virtual IPackageStockpile::const_iterator begin() const = 0;  //
+    virtual IPackageStockpile::const_iterator begin() const = 0;
     virtual IPackageStockpile::const_iterator end() const = 0;
     virtual void receive_package(Package &&p) = 0;
     virtual ElementID get_id() const = 0;
@@ -108,6 +108,7 @@ public:
     IPackageStockpile::const_iterator end() const override { return q_->end(); };
     IPackageStockpile::const_iterator cend() const override { return q_->cend(); };
     ReceiverType get_receiver_type() const override { return ReceiverType::WORKER; };
+    IPackageQueue* get_queue(void) {return q_.get();};
 };
 
 // Odbiorca półproduktów
