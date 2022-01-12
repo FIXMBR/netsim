@@ -108,6 +108,7 @@ public:
     IPackageStockpile::const_iterator end() const override { return q_->end(); };
     IPackageStockpile::const_iterator cend() const override { return q_->cend(); };
     ReceiverType get_receiver_type() const override { return ReceiverType::WORKER; };
+    std::unique_ptr<IPackageQueue> get_processing_buffer() const { return q_; };
 };
 
 // Odbiorca półproduktów
