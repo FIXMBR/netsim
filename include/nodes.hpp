@@ -100,7 +100,7 @@ public:
     Worker(ElementID id, TimeOffset pd, std::unique_ptr<IPackageQueue> q) : q_(std::move(q)), id_(id), pd_(pd), buffer_queue(std::nullopt){};
     void do_work(Time time);
     TimeOffset get_processing_duration(void) const { return pd_; };
-    Time get_package_processing_start_time(void) const { return time_; };
+    Time get_package_processing_start_time(void) const { return work_start_time; };
     ElementID get_id() const override { return id_; };
     void receive_package(Package &&p) override { q_->push(std::move(p)); };
     IPackageStockpile::const_iterator begin() const override { return q_->begin(); };
@@ -108,7 +108,8 @@ public:
     IPackageStockpile::const_iterator end() const override { return q_->end(); };
     IPackageStockpile::const_iterator cend() const override { return q_->cend(); };
     ReceiverType get_receiver_type() const override { return ReceiverType::WORKER; };
-    std::unique_ptr<IPackageQueue> get_processing_buffer() const { return q_; };
+    IPackageQueue *get_queue() const { return q_.get(); };
+    const std::optional<Package> &get_processing_buffer() const { return buffer_queue; };
 };
 
 // Odbiorca półproduktów
