@@ -110,6 +110,15 @@ public:
     void do_work(Time time);
 };
 
+enum class ElementType{
+    LOADING_RAMP, WORKER,STOREHOUSE, LINK
+};
+
+struct ParsedLineData {
+    ElementType element_type;
+    std::map<std::string, std::string> parameters;
+};
+ParsedLineData parse_line(const std::string& line);
 
 Factory load_factory_structure(std::istream& is);
 Factory save_factory_structure(std::ostream& os, Factory& factory);
