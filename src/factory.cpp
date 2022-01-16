@@ -115,22 +115,6 @@ bool Factory::has_reachable_storehouse(const PackageSender *sender, std::map<con
         throw std::logic_error("There is no reciver");
 }
 
-//struct ParsedLineData {
-//    enum element_type {
-//        Ramp,
-//        Worker,
-//        Storehouse,
-//        Link
-//    };
-
-
-
-//    std::map<std::string, ParsedLineData> parameters;
-//    for(auto&: i)
-//        parameters[i]
-//
-//}
-
 ParsedLineData parse_line(const std::string& line) {
 
     std::vector<std::string> tokens;
@@ -143,7 +127,6 @@ ParsedLineData parse_line(const std::string& line) {
     tokens.push_back(token);
     }
 
-//    return tokens;
     std::string type = reinterpret_cast<const char*>(token.front());
     tokens.erase(tokens.begin());
     ParsedLineData parse = ParsedLineData();
@@ -176,19 +159,82 @@ Factory load_factory_structure(std::istream& is){
     while (std::getline(is, line)) {
         if(line[0] == ';' or line.empty())
             continue;
-    ParsedLineData parsed_line = parse_line(line);
-    if()
+        ParsedLineData parsed_line = parse_line(line);
+        if(parsed_line.element_type==ElementType::LOADING_RAMP){
+//            LOADING_RAMP id=1 delivery-interval=3
+            factory.add_ramp(Ramp(std::stoi(parsed_line.parameters["id"]),std::stoi(parsed_line.parameters["delivery-interval"])));
+        }
+        else if(parsed_line.element_type ==ElementType::WORKER){
+//            WORKER id=1 processing-time=2 queue-type=FIFO
+            PackageQueueType q;
+            for(const auto &el: parsed_line.parameters){
+                if (el.first == "queue-type"){
+                    if(el.second == "FIFO")
+                        q = PackageQueueType::FIFO;
+                    else if (el.second == "LIFO")
+                        q = PackageQueueType::LIFO;
+                }
+            }
+            factory.add_worker(Worker(std::stoi(parsed_line.parameters["id"]), std::stoi(parsed_line.parameters["processing-time"]), std::make_unique<PackageQueue>(q)));
+        }
+        else if(parsed_line.element_type ==ElementType::STOREHOUSE){
+//            STOREHOUSE id=1
+            factory.add_storehouse(Storehouse(std::stoi(parsed_line.parameters["id"])));
+        }
+        else if(parsed_line.element_type ==ElementType::LINK){
+//            LINK src=ramp-1 dest=worker-1
+            size_t pos = parsed_line.parameters["src"].find('-');
+            std::string src_type = parsed_line.parameters["src"].substr(0, pos);
+            ElementID src_id  = std::stoi(parsed_line.parameters["src"].substr(pos + 1));
+
+            pos = parsed_line.parameters["dest"].find('-');
+            std::string dest_type = parsed_line.parameters["dest"].substr(0, pos);
+            ElementID dest_id  = std::stoi(parsed_line.parameters["dest"].substr(pos + 1));
+            IPackageReceiver* receiver;
+            if(dest_type=="worker") {
+                receiver=&(*factory.find_worker_by_id(dest_id));
+            }else if(dest_type=="store"){
+                receiver=&(*factory.find_storehouse_by_id(dest_id));
+            }
+
+            if (src_type == "ramp"){
+                Ramp& r = *(factory.find_ramp_by_id(src_id));
+                r.receiver_preferences_.add_receiver(receiver);
+            }else if(src_type == "worker"){
+                Worker& r = *(factory.find_worker_by_id(src_id));
+                r.receiver_preferences_.add_receiver(receiver);
+            }
+
+        }
+
+    }
+    return factory;
+}
+
+void save_factory_structure(Factory& factory, std::ostream& os){
+
+    if (factory.ramp_cbegin() != factory.ramp_cend()){
+        os << "; == LOADING RAMPS ==" << '\n' << '\n';
+        for (auto i = factory.ramp_cbegin(); i != factory.ramp_cend(); i++){
+            os << "LOADING_RAMP id =" << std::to_string(i->get_id()) << "delivery-interval=" << std::to_string(i->get_delivery_interval()) << '\n';
+        }
+    }
+    if (factory.worker_cbegin() != factory.worker_cend()){
+        //.get_queue()->get_queue_type()
+        os << "; == WORKERS ==" << '\n' << '\n';
+        for (auto i = factory.worker_cbegin(); i != factory.worker_cend(); i++){
+            os << "WORKER id =" << std::to_string(i->get_id()) << "processing-time=" << std::to_string(i->get_processing_duration()) <<  "queue-type=" << std::to_string(i -> get_queue()) -> get_queue_type() << '\n';
+        }
+    }
+    if (factory.storehouse_cbegin() != factory.storehouse_cend()){
+        os << "; == STOREHOUSE ==" << '\n' << '\n';
+        for (auto i = factory.storehouse_cbegin(); i != factory.storehouse_cend(); i++){
+            os << "STOREHOUSE id =" << std::to_string(i->get_id());
+        }
+    }
+    if (factory.link_begin() != factory.ramp_end()){
 
     }
 }
-
-//        dla każdej linii w pliku
-//jeśli linia pusta lub rozpoczyna się od znaku komentarza - przejdź do kolejnej linii
-//dokonaj parsowania linii
-//        w zależności od typu elementu - wykorzystaj pary (klucz, wartość) do poprawnego:
-//* zainicjalizowania obiektu właściwego typu węzła i dodania go do obiektu fabryki, albo
-//* utworzenia połączenia między zadanymi węzłami sieci
-//
-//zwróć wypełniony obiekt fabryki
 
 //1b: Bartoszewski (406690), Gajek (400365), Gąsior (407326), Kowalczyk (406185)
