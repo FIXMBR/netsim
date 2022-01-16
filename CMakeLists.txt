@@ -36,6 +36,7 @@ set(SOURCES_FILES_TESTS
        test/test_Factory.cpp
         test/test_factory_io.cpp
        test/test_reports.cpp
+        test/test_simulate.cpp
         )
 
 # Dodaj konfigurację typu `Test`.

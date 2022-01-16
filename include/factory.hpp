@@ -76,8 +76,8 @@ private:
 public:
     NodeCollection<Ramp>::const_iterator ramp_cbegin() const { return ramp_collection_.begin(); }; // zwraca stały iterator na pierwszy element kontenera
     NodeCollection<Ramp>::const_iterator ramp_cend() const { return ramp_collection_.cend(); };    // zwraca stały iterator na ostatni element kontenera
-    NodeCollection<Ramp>::const_iterator ramp_begin() const { return ramp_collection_.begin(); };  //
-    NodeCollection<Ramp>::const_iterator ramp_end() const { return ramp_collection_.end(); };
+    NodeCollection<Ramp>::iterator ramp_begin() { return ramp_collection_.begin(); };  //
+    NodeCollection<Ramp>::iterator ramp_end() { return ramp_collection_.end(); };
 
     void add_ramp(Ramp &&r) { ramp_collection_.add(std::move(r)); };
     void remove_ramp(ElementID id) { ramp_collection_.remove_by_id(id); };
@@ -86,8 +86,8 @@ public:
 
     NodeCollection<Storehouse>::const_iterator storehouse_cbegin() const { return storehouse_collection_.cbegin(); }; // zwraca stały iterator na pierwszy element kontenera
     NodeCollection<Storehouse>::const_iterator storehouse_cend() const { return storehouse_collection_.cend(); };     // zwraca stały iterator na ostatni element kontenera
-    NodeCollection<Storehouse>::const_iterator storehouse_begin() const { return storehouse_collection_.begin(); };   //
-    NodeCollection<Storehouse>::const_iterator storehouse_end() const { return storehouse_collection_.end(); };
+    NodeCollection<Storehouse>::iterator storehouse_begin()  { return storehouse_collection_.begin(); };   //
+    NodeCollection<Storehouse>::iterator storehouse_end() { return storehouse_collection_.end(); };
 
     void add_storehouse(Storehouse &&s) { storehouse_collection_.add(std::move(s)); };
     //    void remove_storehouse(ElementID id){remove_receiver(storehouse_collection_,id);};
@@ -96,8 +96,8 @@ public:
 
     NodeCollection<Worker>::const_iterator worker_cbegin() const { return worker_collection_.cbegin(); }; // zwraca stały iterator na pierwszy element kontenera
     NodeCollection<Worker>::const_iterator worker_cend() const { return worker_collection_.cend(); };     // zwraca stały iterator na ostatni element kontenera
-    NodeCollection<Worker>::const_iterator worker_begin() const { return worker_collection_.begin(); };   //
-    NodeCollection<Worker>::const_iterator worker_end() const { return worker_collection_.end(); };
+    NodeCollection<Worker>::iterator worker_begin()  { return worker_collection_.begin(); };   //
+    NodeCollection<Worker>::iterator worker_end()  { return worker_collection_.end(); };
 
     void add_worker(Worker &&s) { worker_collection_.add(std::move(s)); };
     void remove_worker(ElementID id) { remove_receiver(worker_collection_, id); };

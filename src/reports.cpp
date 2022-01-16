@@ -58,7 +58,7 @@ void generate_structure_report(const Factory &f, std::ostream &os)
        << "== STOREHOUSES ==" << std::endl
        << std::endl;
 
-    for (auto it = f.storehouse_cbegin(); it != f.storehouse_end(); ++it)
+    for (auto it = f.storehouse_cbegin(); it != f.storehouse_cend(); ++it)
     {
         os << "STOREHOUSE #" << (*it).get_id() << std::endl;
         os << std::endl;
