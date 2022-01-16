@@ -127,7 +127,7 @@ ParsedLineData parse_line(const std::string& line) {
     tokens.push_back(token);
     }
 
-    std::string type = reinterpret_cast<const char*>(token.front());
+    std::string type(&token.front());
     tokens.erase(tokens.begin());
     ParsedLineData parse = ParsedLineData();
     if(type == "LOADING_RAMP")
@@ -211,30 +211,52 @@ Factory load_factory_structure(std::istream& is){
     return factory;
 }
 
-void save_factory_structure(Factory& factory, std::ostream& os){
+void save_factory_structure(Factory& factory, std::ostream& os) {
 
-    if (factory.ramp_cbegin() != factory.ramp_cend()){
+    if (factory.ramp_cbegin() != factory.ramp_cend()) {
+
         os << "; == LOADING RAMPS ==" << '\n' << '\n';
-        for (auto i = factory.ramp_cbegin(); i != factory.ramp_cend(); i++){
-            os << "LOADING_RAMP id =" << std::to_string(i->get_id()) << "delivery-interval=" << std::to_string(i->get_delivery_interval()) << '\n';
+        for (auto i = factory.ramp_cbegin(); i != factory.ramp_cend(); i++) {
+            os << "LOADING_RAMP id =" << std::to_string(i->get_id()) << "delivery-interval="
+               << std::to_string(i->get_delivery_interval()) << '\n';
         }
     }
-    if (factory.worker_cbegin() != factory.worker_cend()){
+    if (factory.worker_cbegin() != factory.worker_cend()) {
         //.get_queue()->get_queue_type()
         os << "; == WORKERS ==" << '\n' << '\n';
-        for (auto i = factory.worker_cbegin(); i != factory.worker_cend(); i++){
-            os << "WORKER id =" << std::to_string(i->get_id()) << "processing-time=" << std::to_string(i->get_processing_duration()) <<  "queue-type=" << ((i ->get_queue()->get_queue_type() == PackageQueueType::FIFO) ? "FIFO" : "LIFO") << '\n';
+        for (auto i = factory.worker_cbegin(); i != factory.worker_cend(); i++) {
+            os << "WORKER id =" << std::to_string(i->get_id()) << "processing-time="
+               << std::to_string(i->get_processing_duration()) << "queue-type="
+               << ((i->get_queue()->get_queue_type() == PackageQueueType::FIFO) ? "FIFO" : "LIFO") << '\n';
         }
     }
-    if (factory.storehouse_cbegin() != factory.storehouse_cend()){
-        os << "; == STOREHOUSE ==" << '\n' << '\n';
-        for (auto i = factory.storehouse_cbegin(); i != factory.storehouse_cend(); i++){
-            os << "STOREHOUSE id =" << std::to_string(i->get_id());
+    if (factory.storehouse_cbegin() != factory.storehouse_cend()) {
+        os << "; == STOREHOUSES ==" << '\n' << '\n';
+        for (auto i = factory.storehouse_cbegin(); i != factory.storehouse_cend(); i++) {
+            os << "STOREHOUSE id =" << std::to_string(i->get_id()) << '\n';
         }
     }
-//    if (factory.link_begin() != factory.ramp_end()){
-//
-//    }
+    os << "; == LINKS ==" << '\n';
+
+    if (factory.ramp_cbegin() != factory.ramp_cend()) {
+        for (auto i = factory.ramp_cbegin(); i != factory.ramp_cend(); i++) {
+            for (auto j = i->receiver_preferences_.get_preferences().cbegin();
+                 j != i->receiver_preferences_.get_preferences().cend(); j++)
+                os << "LINK" << "src=ramp-" << i->get_id() << "dest="
+                   << ((j->first->get_receiver_type() == ReceiverType::WORKER) ? "worker" : "store") << "-"
+                   << j->first->get_id() << '\n';
+        }
+    }
+    if (factory.worker_cbegin() != factory.worker_cend()) {
+        for (auto i = factory.worker_cbegin(); i != factory.worker_cend(); i++)
+//            LINK src=worker-1 dest=worker-1
+            for (auto j = i->receiver_preferences_.get_preferences().cbegin();
+                 j != i->receiver_preferences_.get_preferences().cend(); j++) {
+                os << "LINK" << "src=worker-" << i->get_id() << "dest="
+                   << ((j->first->get_receiver_type() == ReceiverType::WORKER) ? "worker" : "store") << "-"
+                   << j->first->get_id() << '\n';
+            }
+    }
 }
 
 //1b: Bartoszewski (406690), Gajek (400365), Gąsior (407326), Kowalczyk (406185)
