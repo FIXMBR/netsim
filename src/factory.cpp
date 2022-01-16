@@ -223,7 +223,7 @@ void save_factory_structure(Factory& factory, std::ostream& os){
         //.get_queue()->get_queue_type()
         os << "; == WORKERS ==" << '\n' << '\n';
         for (auto i = factory.worker_cbegin(); i != factory.worker_cend(); i++){
-            os << "WORKER id =" << std::to_string(i->get_id()) << "processing-time=" << std::to_string(i->get_processing_duration()) <<  "queue-type=" << std::to_string(i -> get_queue()) -> get_queue_type() << '\n';
+            os << "WORKER id =" << std::to_string(i->get_id()) << "processing-time=" << std::to_string(i->get_processing_duration()) <<  "queue-type=" << ((i ->get_queue()->get_queue_type() == PackageQueueType::FIFO) ? "FIFO" : "LIFO") << '\n';
         }
     }
     if (factory.storehouse_cbegin() != factory.storehouse_cend()){
@@ -232,9 +232,9 @@ void save_factory_structure(Factory& factory, std::ostream& os){
             os << "STOREHOUSE id =" << std::to_string(i->get_id());
         }
     }
-    if (factory.link_begin() != factory.ramp_end()){
-
-    }
+//    if (factory.link_begin() != factory.ramp_end()){
+//
+//    }
 }
 
 //1b: Bartoszewski (406690), Gajek (400365), Gąsior (407326), Kowalczyk (406185)

@@ -121,7 +121,7 @@ struct ParsedLineData {
 ParsedLineData parse_line(const std::string& line);
 
 Factory load_factory_structure(std::istream& is);
-Factory save_factory_structure(std::ostream& os, Factory& factory);
+void save_factory_structure( Factory& factory,std::ostream& os);
 
 
 #endif //NETSIM_FACTORY_HPP
