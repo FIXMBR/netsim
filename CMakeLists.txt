@@ -3,9 +3,9 @@ project(netsim)
 
 set(CMAKE_CXX_STANDARD 17)
 
-#add_compile_options(-Wno-unused-variable -Wno-unused-parameter -Wall -Wextra -Werror -Wpedantic -pedantic-errors -Wconversion)#TODO ten nie daje warningów o nieużywanych zmiennych
+add_compile_options(-Wno-unused-variable -Wno-unused-parameter -Wall -Wextra -Werror -Wpedantic -pedantic-errors -Wconversion)#TODO ten nie daje warningów o nieużywanych zmiennych
 # add_compile_options( -Wall -Wextra -Werror -Wpedantic -pedantic-errors -Wconversion)
-add_compile_options(-Wall -Wextra -Werror -Wpedantic -pedantic-errors -Werror=switch)
+#add_compile_options(-Wall -Wextra -Werror -Wpedantic -pedantic-errors -Werror=switch)
 
 include_directories(
         include
@@ -35,6 +35,7 @@ set(SOURCES_FILES_TESTS
         test/test_nodes.cpp
        test/test_Factory.cpp
         test/test_factory_io.cpp
+       test/test_reports.cpp
         )
 
 # Dodaj konfigurację typu `Test`.
