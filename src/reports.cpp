@@ -7,14 +7,23 @@ void generate_structure_report(const Factory &f, std::ostream &os)
        << "== LOADING RAMPS ==" << std::endl
        << std::endl;
 
+    std::vector<const Ramp *> ramps_v;
     for (auto it = f.ramp_cbegin(); it != f.ramp_cend(); ++it)
     {
-        os << "LOADING RAMP #" << (*it).get_id() << std::endl;
-        os << "  Delivery interval: " << (*it).get_delivery_interval() << std::endl;
+        ramps_v.push_back(&(*it));
+    }
+
+    std::sort(ramps_v.begin(), ramps_v.end(), [](auto a, auto b)
+              { return a->get_id() < b->get_id(); });
+
+    for (auto it = ramps_v.cbegin(); it != ramps_v.cend(); ++it)
+    {
+        os << "LOADING RAMP #" << (*it)->get_id() << std::endl;
+        os << "  Delivery interval: " << (*it)->get_delivery_interval() << std::endl;
         os << "  Receivers:" << std::endl;
 
         std::vector<ElementID> receivers_v;
-        for (auto itw = (*it).receiver_preferences_.cbegin(); itw != (*it).receiver_preferences_.cend(); ++itw)
+        for (auto itw = (*it)->receiver_preferences_.cbegin(); itw != (*it)->receiver_preferences_.cend(); ++itw)
         {
             receivers_v.push_back((*(*itw).first).get_id());
         }
@@ -30,15 +39,25 @@ void generate_structure_report(const Factory &f, std::ostream &os)
        << "== WORKERS ==" << std::endl
        << std::endl;
 
+    std::vector<const Worker *> workers_v;
+
     for (auto it = f.worker_cbegin(); it != f.worker_cend(); ++it)
     {
-        os << "WORKER #" << (*it).get_id() << std::endl;
-        os << "  Processing time: " << (*it).get_processing_duration() << std::endl;
-        os << "  Queue type: " << (((*it).get_queue()->get_queue_type() == PackageQueueType::FIFO) ? "FIFO" : "LIFO") << std::endl;
+        workers_v.push_back(&(*it));
+    }
+
+    std::sort(workers_v.begin(), workers_v.end(), [](auto a, auto b)
+              { return a->get_id() < b->get_id(); });
+
+    for (auto it = workers_v.cbegin(); it != workers_v.cend(); ++it)
+    {
+        os << "WORKER #" << (*it)->get_id() << std::endl;
+        os << "  Processing time: " << (*it)->get_processing_duration() << std::endl;
+        os << "  Queue type: " << (((*it)->get_queue()->get_queue_type() == PackageQueueType::FIFO) ? "FIFO" : "LIFO") << std::endl;
         os << "  Receivers:" << std::endl;
         std::vector<ElementID> workers_v;
         std::vector<ElementID> storehouses_v;
-        for (auto itw = (*it).receiver_preferences_.cbegin(); itw != (*it).receiver_preferences_.cend(); ++itw)
+        for (auto itw = (*it)->receiver_preferences_.cbegin(); itw != (*it)->receiver_preferences_.cend(); ++itw)
         {
             (((*(*itw).first).get_receiver_type() == ReceiverType::STOREHOUSE) ? storehouses_v : workers_v).push_back((*(*itw).first).get_id());
         }
@@ -58,9 +77,19 @@ void generate_structure_report(const Factory &f, std::ostream &os)
        << "== STOREHOUSES ==" << std::endl
        << std::endl;
 
-    for (auto it = f.storehouse_cbegin(); it != f.storehouse_end(); ++it)
+    std::vector<const Storehouse *> storehouses_v;
+
+    for (auto it = f.storehouse_cbegin(); it != f.storehouse_cend(); ++it)
     {
-        os << "STOREHOUSE #" << (*it).get_id() << std::endl;
+        storehouses_v.push_back(&(*it));
+    }
+
+    std::sort(storehouses_v.begin(), storehouses_v.end(), [](auto a, auto b)
+              { return a->get_id() < b->get_id(); });
+
+    for (auto it = storehouses_v.cbegin(); it != storehouses_v.cend(); ++it)
+    {
+        os << "STOREHOUSE #" << (*it)->get_id() << std::endl;
         os << std::endl;
     }
 }
